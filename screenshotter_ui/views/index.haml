@@ -1,0 +1,25 @@
+%h1 Screenshotter!
+- if @error
+  .row
+    .card-panel.red.darken-1.white-text.valign-wrapper
+      %i.material-icons report_problem
+      = @error
+.row
+  .card
+    .card-content
+      %span.card-title Submit a URL to Screenshot
+      %form{action: '/', method: 'POST'}
+        .input-field
+          %input{type: 'text', name: 'url', placeholder: 'http://google.com'}
+          %label{for: 'url'} Link
+        .right-align
+          %button.btn.waves-effect{type: 'submit'} Submit
+- locals[:screenshots].each do |screen|
+  .card
+    .card-content
+      .card-image
+        %image{src: 'data:image/jpg;base64,' + screen['base64']}
+      %span.card-title= screen['url']
+      Saved at
+      = screen['time']
+  

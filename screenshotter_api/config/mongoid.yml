@@ -1,0 +1,6 @@
+development:
+  clients:
+    default:
+      database: screenshotter
+      hosts:
+        - localhost:27017

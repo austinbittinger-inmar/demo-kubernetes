@@ -1,0 +1,6 @@
+api:
+  url: http://localhost:8001/
+  token: VerySecret
+slack:
+  url: http://localhost:8002/notify
+  token: EvenMoreSecret
