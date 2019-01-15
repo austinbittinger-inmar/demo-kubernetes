@@ -1,6 +1,6 @@
 development:
   clients:
     default:
-      database: screenshotter
+      database: <%= ENV['MONGODB_DATABASE'] %>
       hosts:
-        - localhost:27017
+        - <%= ENV['MONGODB_URL'] %>

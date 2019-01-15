@@ -1,6 +1,6 @@
 api:
-  url: http://localhost:8001/
-  token: VerySecret
+  url: <%= ENV['API_URL'] %>
+  token: <%= ENV['API_TOKEN'] %>
 slack:
   url: http://localhost:8002/notify
   token: EvenMoreSecret

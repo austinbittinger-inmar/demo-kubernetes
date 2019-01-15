@@ -1,3 +1,5 @@
 require 'yaml'
+require 'erb'
 
-APP_CONFIG = YAML.load_file(APP_ROOT + '/config/apps.yml')
+erb = ERB.new(File.read(APP_ROOT + '/config/apps.yml')).result
+APP_CONFIG = YAML.load(erb)

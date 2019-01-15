@@ -1,7 +1,10 @@
 require 'yaml'
 require 'sidekiq'
+require 'erb'
 
-redis_config = YAML.load_file(APP_ROOT + '/config/redis.yml')
+erb = ERB.new(File.read(APP_ROOT + '/config/redis.yml')).result
+redis_config = YAML.load(erb)
+
 url = "redis://#{redis_config['host']}:#{redis_config['port']}/0"
 
 Sidekiq.configure_server do |config|

@@ -20,7 +20,16 @@ class ScreenshotWorker
   private
 
   def driver
-    @driver ||= Capybara::Session.new(:selenium_headless)
+    return @driver if @driver
+    Capybara.register_driver :selenium do |app|
+      Capybara::Selenium::Driver.new(
+        app,
+        browser: :remote,
+        url: ENV['CHROME_PORT_SERVER']
+      )
+    end
+
+    @driver = Capybara::Session.new(:selenium)
   end
 
   def filename

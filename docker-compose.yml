@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  ui:
+    build: screenshotter_ui/
+    environment:
+      API_URL:
+      API_TOKEN:
+    depends_on:
+    - api
+    stdin_open: true
+    tty: true
+    volumes:
+      - "./screenshotter_ui/:/ui/"
+    ports:
+      - "8000:8000"
+  api:
+    build: screenshotter_api/
+    environment:
+      REDIS_HOST:
+      REDIS_PORT:
+      MONGODB_URL:
+      MONGODB_DATABASE:
+    depends_on:
+    - redis
+    - mongodb
+    stdin_open: true
+    tty: true
+    volumes:
+    - "./screenshotter_api/:/api/"
+  api_workers:
+    build: screenshotter_api/
+    environment:
+      REDIS_HOST:
+      REDIS_PORT:
+      MONGODB_URL:
+      MONGODB_DATABASE:
+      CHROME_PORT_SERVER:
+    depends_on:
+    - redis
+    - mongodb
+    command: ["bundle", "exec", "sidekiq", "-r", "./boot.rb"]
+    stdin_open: true
+    tty: true
+    volumes:
+    - "./screenshotter_api/:/api/"
+  redis:
+    image: redis:latest
+  mongodb:
+    image: mongo:3.4.18
+  chrome:
+    # For whatever reason, chrome headless needs priveleged access
+    # https://github.com/RobCherry/docker-chromedriver/issues/7
+    privileged: true
+    image: robcherry/docker-chromedriver:latest
+    environment:
+      # Explicitly allow remote hosts
+      CHROMEDRIVER_WHITELISTED_IPS: ""
