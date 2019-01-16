@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: screenshotter-api
+  namespace: screenshotter
+  labels:
+    app: screenshotter-api
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: screenshotter-api
+  template:
+    metadata:
+      namespace: screenshotter
+      labels:
+        app: screenshotter-api
+    spec:
+      containers:
+      - name: screenshotter-api
+        image: austinbittinger/screenshotter-api:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: screenshotter-api
+              key: REDIS_HOST
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: screenshotter-api
+              key: REDIS_PORT
+        - name: MONGODB_URL
+          valueFrom:
+            configMapKeyRef:
+              name: screenshotter-api
+              key: MONGODB_URL
+        - name: MONGODB_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: screenshotter-api
+              key: MONGODB_DATABASE
+        - name: CHROME_PORT_SERVER
+          valueFrom:
+            configMapKeyRef:
+              name: screenshotter-api
+              key: CHROME_PORT_SERVER

@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: screenshotter-ui
+  namespace: screenshotter
+spec:
+  rules:
+  - host: k8.molaas.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: screenshotter-ui
+          servicePort: 80

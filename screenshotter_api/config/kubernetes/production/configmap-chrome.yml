@@ -1,0 +1,8 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: chrome
+  namespace: screenshotter
+data:
+  CHROMEDRIVER_WHITELISTED_IPS: ""
+    

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chrome
+  namespace: screenshotter
+  labels:
+    app: chrome
+spec:
+  # This is not a load-balance-able service, unfortunately
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: chrome
+  template:
+    metadata:
+      namespace: screenshotter
+      labels:
+        app: chrome
+    spec:
+      containers:
+      - name: chrome
+        image: robcherry/docker-chromedriver:latest
+        env:
+        - name: CHROMEDRIVER_WHITELISTED_IPS
+          valueFrom:
+            configMapKeyRef:
+              name: chrome
+              key: CHROMEDRIVER_WHITELISTED_IPS

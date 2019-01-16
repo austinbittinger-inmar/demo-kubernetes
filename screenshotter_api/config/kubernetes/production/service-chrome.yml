@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: chrome
+  namespace: screenshotter
+spec:
+  type: LoadBalancer
+  selector:
+    app: chrome
+  ports:
+  - protocol: TCP
+    port: 4444
+    targetPort: 4444
+

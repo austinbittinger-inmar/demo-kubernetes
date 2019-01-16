@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: screenshotter-api
+  namespace: screenshotter
+spec:
+  type: LoadBalancer
+  selector:
+    app: screenshotter-api
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8001
+

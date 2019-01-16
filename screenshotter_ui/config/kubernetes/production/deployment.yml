@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
-  namespace: test
+  name: screenshotter-ui
+  namespace: screenshotter
   labels:
-    app: nginx
+    app: screenshotter-ui
 spec:
   replicas: 3
   strategy:
@@ -14,23 +14,28 @@ spec:
       maxUnavailable: 1
   selector:
     matchLabels:
-      app: nginx
+      app: screenshotter-ui
   template:
     metadata:
-      namespace: test
+      namespace: screenshotter
       labels:
-        app: nginx
+        app: screenshotter-ui
     spec:
       containers:
-      - name: nginx
-        image: nginx:latest
+      - name: screenshotter-ui
+        image: austinbittinger/screenshotter-ui:latest
         ports:
         - containerPort: 80
         env:
-        - name: TEST
+        - name: API_URL
           valueFrom:
             configMapKeyRef:
-              name: test-config
-              key: TEST
+              name: screenshotter-ui
+              key: API_URL
+        - name: API_TOKEN
+          valueFrom:
+            configMapKeyRef:
+              name: screenshotter-ui
+              key: API_TOKEN
             
 

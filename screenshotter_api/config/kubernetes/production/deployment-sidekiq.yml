@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: screenshotter-api-sidekiq
+  namespace: screenshotter
+  labels:
+    app: screenshotter-api-sidekiq
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: screenshotter-api-sidekiq
+  template:
+    metadata:
+      namespace: screenshotter
+      labels:
+        app: screenshotter-api-sidekiq
+    spec:
+      containers:
+      - name: screenshotter-api-sidekiq
+        image: austinbittinger/screenshotter-api:latest
+        command: ["bundle"]
+        args: ["exec", "sidekiq", "-r", "./boot.rb"]
+        env:
+        - name: REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: screenshotter-api
+              key: REDIS_HOST
+        - name: REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: screenshotter-api
+              key: REDIS_PORT
+        - name: MONGODB_URL
+          valueFrom:
+            configMapKeyRef:
+              name: screenshotter-api
+              key: MONGODB_URL
+        - name: MONGODB_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: screenshotter-api
+              key: MONGODB_DATABASE
+        - name: CHROME_PORT_SERVER
+          valueFrom:
+            configMapKeyRef:
+              name: screenshotter-api
+              key: CHROME_PORT_SERVER
